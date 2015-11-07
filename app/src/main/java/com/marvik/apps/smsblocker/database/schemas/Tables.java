@@ -22,7 +22,7 @@ public class Tables {
 
         public static final String TABLE_NAME = "blockedsms";
 
-        public static final Uri CONTENT_URI = Uri.parse("content://");
+        public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.smsblocker.database.provider.DataProvider/"+TABLE_NAME);
 
         public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
                 + "("
