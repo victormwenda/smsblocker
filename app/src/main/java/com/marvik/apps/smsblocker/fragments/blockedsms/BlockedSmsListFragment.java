@@ -1,4 +1,4 @@
-package com.marvik.apps.smsblocker.fragments;
+package com.marvik.apps.smsblocker.fragments.blockedsms;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +9,9 @@ import com.marvik.apis.core.fragments.FragmentWrapper;
 import com.marvik.apps.smsblocker.R;
 
 /**
- * Created by victor on 11/21/2015.
+ * Created by victor on 11/7/2015.
  */
-public class BlockedMessageSendersFragment extends FragmentWrapper {
+public class BlockedSmsListFragment extends FragmentWrapper {
     @Override
     public void onCreateFragment(@Nullable Bundle savedInstanceState) {
 
@@ -20,7 +20,7 @@ public class BlockedMessageSendersFragment extends FragmentWrapper {
     @Nullable
     @Override
     public String getActivityTitle() {
-        return getActivity().getString(R.string.activity_title_blocked_numbers);
+        return getActivity().getString(R.string.activity_title_blocked_sms);
     }
 
     @Override
