@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +31,8 @@ public class BlockedSmsListFragment extends FragmentWrapper {
     private MultiAutoCompleteTextView mEtSearchBlockedSms;
     private ImageView mIvCancelSearch;
     private ImageView mIvSearch;
+
+    private OnBlockedSms onBlockedSms;
 
     private View mBlockedMessagesView;
     private List<BlockedSmsInfo> mBlockedSmsInfos;
@@ -53,6 +58,17 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         @Override
         public void afterTextChanged(Editable s) {
             populateBlockedMessages();
+            if (mEtSearchBlockedSms.getText().toString().length() > 0) {
+                mIvSearch.setVisibility(ImageView.GONE);
+                mIvCancelSearch.setVisibility(ImageView.VISIBLE);
+                mEtSearchBlockedSms.setPadding(10, 0, 0, 0);
+            }
+            if (mEtSearchBlockedSms.getText().toString().length() <= 0) {
+                mIvSearch.setVisibility(ImageView.VISIBLE);
+                mIvCancelSearch.setVisibility(ImageView.GONE);
+                mEtSearchBlockedSms.setPadding(60, 0, 0, 0);
+
+            }
         }
     };
     private View.OnClickListener blockedSmsSearchWizardClicksListener = new View.OnClickListener() {
@@ -100,11 +116,15 @@ public class BlockedSmsListFragment extends FragmentWrapper {
 
     @Override
     public void onAttachFragment() {
-
+        onBlockedSms = (OnBlockedSms) getActivity();
     }
 
     @Override
     public void onResumeFragment() {
+
+        //Trigger Text Watcher
+        mEtSearchBlockedSms.setText("");
+
         populateBlockedMessages();
     }
 
@@ -161,4 +181,22 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         mLvBlockedSms.setAdapter(new BlockedSmsAdapter(getActivity(), R.layout.list_blocked_sms_all, mBlockedSmsInfos));
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_blocked_messages, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_blocked_messages_view_message_senders) {
+            onBlockedSms.viewMessageSenders();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public interface OnBlockedSms {
+
+        void viewMessageSenders();
+    }
 }

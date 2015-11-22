@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/fragment_blocked_sms_all_rl_search_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/fragment_blocked_sms_all_iv_search"
@@ -20,15 +18,15 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:src="@drawable/search_icon"/>
+            android:src="@drawable/search_icon" />
 
         <MultiAutoCompleteTextView
             android:id="@+id/fragment_blocked_sms_all_mactv_search"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:inputType="textMultiLine"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingLeft="50dp"
+            android:paddingRight="10dp" />
 
         <ImageView
             android:id="@+id/fragment_blocked_sms_all_iv_close_clear_cancel"
@@ -37,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
     </RelativeLayout>
 
     <ListView

@@ -97,9 +97,9 @@ public class TransactionsManager {
 
         String selection = null;
 
-        if (searchKey != null || !searchKey.equals("")) {
+        if (searchKey != null && !searchKey.equals("")) {
 
-            selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + " LIKE '%" + searchKey + "%'"
+            selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + " LIKE '%" + searchKey + "%' OR "
                     + Tables.BlockedSms.COL_MESSAGE_TEXT + " LIKE '%" + searchKey + "%'";
 
             /* TO BE ADDED IN FUTURE VERSIONS
@@ -109,7 +109,7 @@ public class TransactionsManager {
 
         }
 
-        String[] projection = {Tables.BlockedSms.COL_SENDER_PHONENUMBER, Tables.BlockedSms.COL_MESSAGE_TEXT};
+        String[] projection = null;
 
         Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.DEFAULT_SORT_ORDER);
 
