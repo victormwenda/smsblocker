@@ -10,7 +10,7 @@ import android.util.Log;
 import com.marvik.apps.smsblocker.database.operations.DataOperations;
 import com.marvik.apps.smsblocker.database.queries.Queries;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
-import com.marvik.apps.smsblocker.infos.blocked.senders.BlockedMessageSendersInfo;
+import com.marvik.apps.smsblocker.infos.blocked.senders.SmsSendersInfo;
 import com.marvik.apps.smsblocker.infos.blocked.sms.BlockedSmsInfo;
 
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class TransactionsManager {
 
         String[] projection = {Tables.BlockedSms.COL_SENDER_PHONENUMBER, Tables.BlockedSms.COL_MESSAGE_TEXT};
 
-        Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.SORT_ORDER_DEFAULT);
+        Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.DEFAULT_SORT_ORDER);
 
         List<BlockedSmsInfo> blockedSmsInfos = new ArrayList<>();
 
@@ -145,6 +145,88 @@ public class TransactionsManager {
 
     private String mysqlRealEscape(String searchKey) {
         return searchKey.replace("'", "'\\");
+    }
+
+
+    public int getBlockedSmsSenderBlockedMessagesCount(String senderPhonenumber) {
+
+        String[] projection = {Tables.BlockedSms.COL_SENDER_PHONENUMBER};
+
+        String selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + "='" + senderPhonenumber + "'";
+
+        Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.DEFAULT_SORT_ORDER);
+
+        int smsCount = 0;
+
+        if (cursor != null) {
+            smsCount = cursor.getCount();
+        }
+        if (cursor != null) if (!cursor.isClosed()) cursor.close();
+
+        return smsCount;
+    }
+
+    public List<SmsSendersInfo> getSmsSendersInfo(String searchKey) {
+
+        List<SmsSendersInfo> smsSendersInfos = new ArrayList<SmsSendersInfo>();
+
+        searchKey = mysqlRealEscape(searchKey);
+
+        String selection = null;
+
+        if (searchKey != null || !searchKey.equals("")) {
+
+            selection = Tables.SMSSenders.COL_SENDER_ADDRESS + " LIKE '" + searchKey + "'";
+        }
+
+        String[] projection = {Tables.SMSSenders.COL_SENDER_ADDRESS};
+
+        Cursor cursor = getSmsSenders().query(projection, selection, null, Queries.SmsSenders.DEFAULT_SORT_ORDER);
+
+        if (cursor != null) {
+
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
+                int messageSenderId = cursor.getInt(cursor.getColumnIndex(Tables.SMSSenders.COL_ID));
+                String messageSenderAddress = cursor.getString(cursor.getColumnIndex(Tables.SMSSenders.COL_SENDER_ADDRESS));
+                int blocked = cursor.getInt(cursor.getColumnIndex(Tables.SMSSenders.COL_BLOCKED));
+                long blockedTime = cursor.getLong(cursor.getColumnIndex(Tables.SMSSenders.COL_BLOCK_TIME));
+
+                smsSendersInfos.add(new SmsSendersInfo(messageSenderId, messageSenderAddress, blocked, blockedTime));
+            }
+        }
+
+
+        if (cursor != null)
+            if (!cursor.isClosed()) cursor.close();
+
+
+        return smsSendersInfos;
+    }
+
+    public void saveMessageSender(String address) {
+        saveMessageSender(address, false, System.currentTimeMillis());
+    }
+
+    public void saveMessageSender(String address, boolean blocked, long blockTime) {
+
+        int iBlocked = blocked == true ? 1 : 0;
+
+        String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
+        String[] columnValues = {address};
+
+        ContentValues values = new ContentValues();
+
+        values.put(Tables.SMSSenders.COL_SENDER_ADDRESS, address);
+        values.put(Tables.SMSSenders.COL_BLOCKED, iBlocked);
+
+        if (isExists(getSmsSenders().getUri(), columns, columnValues)) {
+            int smsSenderId = getSmsSenders().getBlockedSmsSenderId(address);
+            getSmsSenders().update(values, Tables.SMSSenders.COL_ID + "='" + smsSenderId + "'", null);
+        } else {
+            values.put(Tables.SMSSenders.COL_BLOCK_TIME, System.currentTimeMillis());
+            getSmsSenders().insert(values);
+        }
     }
 
     public boolean isExists(@NonNull Uri uri, @NonNull String[] columns, @NonNull String[] columnValues) {
@@ -217,54 +299,6 @@ public class TransactionsManager {
         }
         if (cursor != null) cursor.close();
         return null;
-    }
-
-    public int getBlockedSmsSenderBlockedMessagesCount(String senderPhonenumber) {
-
-        String[] projection = {Tables.BlockedSms.COL_SENDER_PHONENUMBER};
-
-        String selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + "='" + senderPhonenumber + "'";
-
-        Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.SORT_ORDER_DEFAULT);
-
-        int smsCount = 0;
-
-        if (cursor != null) {
-            smsCount = cursor.getCount();
-        }
-        if (cursor != null) if (!cursor.isClosed()) cursor.close();
-
-        return smsCount;
-    }
-
-    public List<BlockedMessageSendersInfo> getBlockedMessageSendersInfo() {
-        List<BlockedMessageSendersInfo> blockedMessageSendersInfos = new ArrayList<>();
-        return blockedMessageSendersInfos;
-    }
-
-    public void saveMessageSender(String address) {
-        saveMessageSender(address, false, System.currentTimeMillis());
-    }
-
-    public void saveMessageSender(String address, boolean blocked, long blockTime) {
-
-        int iBlocked = blocked == true ? 1 : 0;
-
-        String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
-        String[] columnValues = {address};
-
-        ContentValues values = new ContentValues();
-
-        values.put(Tables.SMSSenders.COL_SENDER_ADDRESS, address);
-        values.put(Tables.SMSSenders.COL_BLOCKED, iBlocked);
-
-        if (isExists(getSmsSenders().getUri(), columns, columnValues)) {
-            int smsSenderId = getSmsSenders().getBlockedSmsSenderId(address);
-            getSmsSenders().update(values, Tables.SMSSenders.COL_ID + "='" + smsSenderId + "'", null);
-        } else {
-            values.put(Tables.SMSSenders.COL_BLOCK_TIME, System.currentTimeMillis());
-            getSmsSenders().insert(values);
-        }
     }
 
     private class TblBlockedSms implements DataOperations {
@@ -449,5 +483,4 @@ public class TransactionsManager {
         }
 
     }
-
 }

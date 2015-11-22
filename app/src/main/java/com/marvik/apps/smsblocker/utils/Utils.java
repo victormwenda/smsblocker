@@ -9,7 +9,7 @@ import android.provider.Telephony;
 
 import com.marvik.apis.core.utilities.Utilities;
 import com.marvik.apps.smsblocker.database.transactions.TransactionsManager;
-import com.marvik.apps.smsblocker.infos.blocked.senders.BlockedMessageSendersInfo;
+import com.marvik.apps.smsblocker.infos.blocked.senders.SmsSendersInfo;
 import com.marvik.apps.smsblocker.preferences.manager.PrefsManager;
 
 import java.util.List;
@@ -37,8 +37,9 @@ public class Utils {
 
         prefsManager = new PrefsManager(getContext());
 
-        if (prefsManager.isFirstRun()) {
+        if (getPrefsManager().isFirstRun()) {
             indexMessageSendersAll();
+            getPrefsManager().setFirstRun(true);
         }
     }
 
@@ -70,11 +71,11 @@ public class Utils {
 
         boolean blocked = false;
 
-        List<BlockedMessageSendersInfo> blockedMessageSendersInfos = getTransactionsManager().getBlockedMessageSendersInfo();
+        List<SmsSendersInfo> smsSendersInfos = getTransactionsManager().getSmsSendersInfo(messageSender);
 
-        for (BlockedMessageSendersInfo blockedMessageSendersInfo : blockedMessageSendersInfos) {
-            if (messageSender.equals(blockedMessageSendersInfo.getMessageSenderAddress())) {
-                blocked = blockedMessageSendersInfo.isBlocked();
+        for (SmsSendersInfo smsSendersInfo : smsSendersInfos) {
+            if (messageSender.equals(smsSendersInfo.getMessageSenderAddress())) {
+                blocked = smsSendersInfo.isBlocked();
             }
         }
         return blocked;

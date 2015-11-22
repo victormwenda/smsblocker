@@ -6,23 +6,23 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/fragment_quotes_editText_search_quote"
+        android:id="@+id/fragment_sms_senders_editText_search_sms_sender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/search_sender" />
 
     <ListView
-        android:id="@+id/fragment_quotes_listView_quotes"
+        android:id="@+id/fragment_sms_senders_listView_sms_senders"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/fragment_quotes_editText_search_quote"
-        tools:listitem="@layout/list_blocked_message_senders">
+        android:layout_below="@+id/fragment_sms_senders_editText_search_sms_sender"
+        tools:listitem="@layout/list_sms_senders">
 
     </ListView>
 
     <ImageView
-        android:id="@+id/fragment_quotes_imageView_create_quote"
+        android:id="@+id/fragment_sms_senders_imageView_add_blocked_sms_sender"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"

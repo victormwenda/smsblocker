@@ -7,6 +7,10 @@ import com.marvik.apps.smsblocker.database.schemas.Tables;
  */
 public class Queries {
     public class BlockedSms {
-        public static final String SORT_ORDER_DEFAULT = Tables.BlockedSms.COL_MESSAGE_RECEIVE_TIME + " DESC ";
+        public static final String DEFAULT_SORT_ORDER = Tables.BlockedSms.COL_MESSAGE_RECEIVE_TIME + " DESC ";
+    }
+
+    public class SmsSenders {
+        public static final String DEFAULT_SORT_ORDER = Tables.SMSSenders.COL_BLOCK_TIME + " DESC ";
     }
 }

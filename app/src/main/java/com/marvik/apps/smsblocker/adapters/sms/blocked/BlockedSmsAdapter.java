@@ -1,4 +1,4 @@
-package com.marvik.apps.smsblocker.adapters;
+package com.marvik.apps.smsblocker.adapters.sms.blocked;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_blocked_sms_all_rl_sender_blocked_sms_infos"
+    android:id="@+id/list_sms_senders_rl_sender_blocked_sms_infos"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="4dp">
 
     <ImageView
-        android:id="@+id/list_blocked_sms_all_iv_sender_avatar"
+        android:id="@+id/list_sms_senders_iv_sender_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,30 +15,30 @@
         android:src="@drawable/ic_action_person" />
 
     <TextView
-        android:id="@+id/list_blocked_sms_all_tv_sender"
+        android:id="@+id/list_sms_senders_tv_sender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/list_blocked_sms_all_iv_sender_avatar"
+        android:layout_toRightOf="@+id/list_sms_senders_iv_sender_avatar"
         android:text="@string/sender_phonenumber_name"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/list_blocked_sms_all_tv_sms_sender_address"
+        android:id="@+id/list_sms_senders_tv_sms_sender_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_blocked_sms_all_tv_sender"
+        android:layout_below="@+id/list_sms_senders_tv_sender"
         android:layout_marginLeft="6dp"
-        android:layout_toRightOf="@+id/list_blocked_sms_all_iv_sender_avatar"
+        android:layout_toRightOf="@+id/list_sms_senders_iv_sender_avatar"
         android:text="@string/sender_phonenumber" />
 
     <TextView
-        android:id="@+id/list_blocked_sms_all_tv_blocked"
+        android:id="@+id/list_sms_senders_tv_blocked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/list_blocked_sms_all_tv_sender"
+        android:layout_below="@+id/list_sms_senders_tv_sender"
         android:layout_marginLeft="6dp"
         android:text="@string/block"
         android:textColor="@android:color/holo_green_dark" />
