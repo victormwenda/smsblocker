@@ -61,12 +61,12 @@ public class BlockedSmsListFragment extends FragmentWrapper {
             if (mEtSearchBlockedSms.getText().toString().length() > 0) {
                 mIvSearch.setVisibility(ImageView.GONE);
                 mIvCancelSearch.setVisibility(ImageView.VISIBLE);
-                mEtSearchBlockedSms.setPadding(20, 0, 0, 0);
+                mEtSearchBlockedSms.setPadding(mIvSearch.getWidth() / 2, 0, 0, 0);
             }
             if (mEtSearchBlockedSms.getText().toString().length() <= 0) {
                 mIvSearch.setVisibility(ImageView.VISIBLE);
                 mIvCancelSearch.setVisibility(ImageView.GONE);
-                mEtSearchBlockedSms.setPadding(72, 0, 0, 0);
+                mEtSearchBlockedSms.setPadding(mIvSearch.getWidth() + 16, 0, 0, 0);
 
             }
         }
@@ -166,6 +166,8 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         mIvCancelSearch = (ImageView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_iv_close_clear_cancel);
 
         mIvSearch = (ImageView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_iv_search);
+
+        mEtSearchBlockedSms.setPadding(mIvSearch.getWidth() + 16, 0, 0, 0);
 
         mLvBlockedSms.setOnItemClickListener(blockedSmsListClickListener);
 

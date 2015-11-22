@@ -42,6 +42,19 @@ public class Utils {
         if (getPrefsManager().isFirstRun()) {
             indexMessageSendersAll();
             getPrefsManager().setFirstRun(false);
+
+            getTransactionsManager().saveBlockedSms("0718034449", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0725238581", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0716202473", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0713273549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0733448549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0718034449", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0725238581", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0716202473", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0713273549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+            getTransactionsManager().saveBlockedSms("0733448549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
+
+
         }
     }
 

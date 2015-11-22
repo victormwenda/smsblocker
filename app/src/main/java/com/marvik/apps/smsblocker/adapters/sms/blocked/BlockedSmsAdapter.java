@@ -64,10 +64,10 @@ public class BlockedSmsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View blockedSmsView = null;
+        View blockedSmsView = convertView;
         BlockedSmsViewHolder blockedSmsViewHolder = null;
 
-        if (convertView == null) {
+        if (blockedSmsView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             blockedSmsView = layoutInflater.inflate(getLayout(), parent, false);
 

@@ -57,8 +57,10 @@ public class SmsReceiver extends BroadcastReceiver {
                 senderPhone = messagePdu.getDisplayOriginatingAddress();
                 messageText = messagePdu.getDisplayMessageBody();
 
-                getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());
-                abortBroadcast();
+                if (utils.isSenderBlocked(senderPhone)) {
+                    getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());
+                    abortBroadcast();
+                }
 
             } else {
                 senderPhone = messagePdu.getOriginatingAddress();

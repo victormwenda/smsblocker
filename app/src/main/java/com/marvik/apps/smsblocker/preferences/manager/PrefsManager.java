@@ -83,21 +83,21 @@ public class PrefsManager implements UserPreferences {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return read(Constants.Preferences.APP_ENABLED, Boolean.class, true);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
-
-    }
-
-    @Override
-    public void setFirstRun(boolean firstRun) {
-        commit(Constants.Preferences.FIRSTRUN, firstRun);
+        commit(Constants.Preferences.APP_ENABLED, enabled);
     }
 
     @Override
     public boolean isFirstRun() {
         return read(Constants.Preferences.FIRSTRUN, Boolean.class, true);
+    }
+
+    @Override
+    public void setFirstRun(boolean firstRun) {
+        commit(Constants.Preferences.FIRSTRUN, firstRun);
     }
 }
