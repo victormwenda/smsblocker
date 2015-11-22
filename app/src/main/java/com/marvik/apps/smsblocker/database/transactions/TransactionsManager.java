@@ -99,8 +99,8 @@ public class TransactionsManager {
 
         if (searchKey != null || !searchKey.equals("")) {
 
-            selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + " LIKE '" + searchKey + "'"
-                    + Tables.BlockedSms.COL_MESSAGE_TEXT + " LIKE '" + searchKey + "'";
+            selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + " LIKE '%" + searchKey + "%'"
+                    + Tables.BlockedSms.COL_MESSAGE_TEXT + " LIKE '%" + searchKey + "%'";
 
             /* TO BE ADDED IN FUTURE VERSIONS
             +Tables.BlockedSms.COL_MESSAGE_SEND_TIME +" LIKE '" +parseTimeinMillis(searchKey) +"'"
@@ -172,15 +172,15 @@ public class TransactionsManager {
         searchKey = mysqlRealEscape(searchKey);
 
         String selection = null;
+        String[] projection = null;
 
         if (searchKey != null && !searchKey.equals("")) {
 
-            selection = Tables.SMSSenders.COL_SENDER_ADDRESS + " LIKE '" + searchKey + "'";
+            selection = Tables.SMSSenders.COL_SENDER_ADDRESS + " LIKE '%" + searchKey + "%'";
         }
 
-        String[] projection = {Tables.SMSSenders.COL_SENDER_ADDRESS};
 
-        Cursor cursor = getSmsSenders().query(null, null, null, null);
+        Cursor cursor = getSmsSenders().query(projection, selection, null, null);
 
         if (cursor != null) {
 

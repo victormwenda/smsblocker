@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.marvik.apps.smsblocker.database.actions.DataAction;
+import com.marvik.apps.smsblocker.database.queries.Queries;
 import com.marvik.apps.smsblocker.database.schemas.Database;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
 
@@ -58,10 +59,10 @@ public class DataProvider extends ContentProvider {
         initSqliteDatabase(DataAction.DATA_ACTION_QUERY);
 
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
-            return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+            return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, null, null, Queries.BlockedSms.DEFAULT_SORT_ORDER, null);
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
-            return getSqLiteDatabase().query(false, Tables.SMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+            return getSqLiteDatabase().query(false, Tables.SMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, Queries.SmsSenders.DEFAULT_SORT_ORDER, null);
         }
 
         return null;
