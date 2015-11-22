@@ -96,6 +96,8 @@ public class SmsSendersFragment extends FragmentWrapper {
         mSmsSendersView = getActivity().getLayoutInflater().inflate(getParentLayout(), container, false);
         initChildViews(mSmsSendersView);
         getContainer().addView(mSmsSendersView);
+
+        getUtils().getUtilities().toast("Number of Senders " + getUtils().getTransactionsManager().getSendersCount());
     }
 
     @Override

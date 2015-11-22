@@ -2,6 +2,8 @@ package com.marvik.apps.smsblocker.database.schemas;
 
 import android.net.Uri;
 
+import com.marvik.apps.smsblocker.database.provider.DataProvider;
+
 /**
  * Created by victor on 11/7/2015.
  */
@@ -22,7 +24,7 @@ public class Tables {
 
         public static final String TABLE_NAME = "blockedsms";
 
-        public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.smsblocker.database.provider.DataProvider/" + TABLE_NAME);
+        public static final Uri CONTENT_URI = Uri.parse("content://" + DataProvider.getAuthority() + "/" + TABLE_NAME);
 
         public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
                 + "("
@@ -46,7 +48,7 @@ public class Tables {
 
         public static final String TABLE_NAME = "blockedsmssenders";
 
-        public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.smsblocker.database.provider.DataProvider/" + TABLE_NAME);
+        public static final Uri CONTENT_URI = Uri.parse("content://" + DataProvider.getAuthority() + "/" + TABLE_NAME);
 
         public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
                 + "("

@@ -6,6 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.marvik.apps.smsblocker.database.actions.DataAction;
 import com.marvik.apps.smsblocker.database.schemas.Database;
@@ -16,7 +17,7 @@ import java.util.Locale;
 /**
  * Created by victor on 11/7/2015.
  */
-public final class DataProvider extends ContentProvider {
+public class DataProvider extends ContentProvider {
 
     private static final String AUTHORITY;
 
@@ -36,7 +37,7 @@ public final class DataProvider extends ContentProvider {
 
 
         uriMatcher.addURI(AUTHORITY, Tables.BlockedSms.TABLE_NAME, MATCHER_BLOCKED_SMS);
-        uriMatcher.addURI(AUTHORITY, Tables.BlockedSms.TABLE_NAME, MATCHER_BLOCKED_SMS_SENDERS);
+        uriMatcher.addURI(AUTHORITY, Tables.SMSSenders.TABLE_NAME, MATCHER_BLOCKED_SMS_SENDERS);
     }
 
     private Database database;
@@ -49,7 +50,7 @@ public final class DataProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         database = new Database(getContext());
-        return database != null;
+        return false;
     }
 
     @Override
@@ -86,11 +87,15 @@ public final class DataProvider extends ContentProvider {
 
         initSqliteDatabase(DataAction.DATA_ACTION_INSERT);
 
+        Log.i("DATA_PROVIDER", "INSERTING DATA");
+
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
+            Log.i("DATA_PROVIDER", "INSERTING -> " + uri);
             long _id = getSqLiteDatabase().insert(Tables.BlockedSms.TABLE_NAME, null, values);
             return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
+            Log.i("DATA_PROVIDER", "INSERTING -> " + uri);
             long _id = getSqLiteDatabase().insert(Tables.SMSSenders.TABLE_NAME, null, values);
             return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
         }

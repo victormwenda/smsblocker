@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.Telephony;
+import android.util.Log;
 
 import com.marvik.apis.core.utilities.Utilities;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
@@ -38,9 +39,12 @@ public class Utils {
 
         prefsManager = new PrefsManager(getContext());
 
+        //TODO DELETE THIS LINE
+        getPrefsManager().setFirstRun(true);
+
         if (getPrefsManager().isFirstRun()) {
             indexMessageSendersAll();
-            getPrefsManager().setFirstRun(true);
+            getPrefsManager().setFirstRun(false);
         }
     }
 
@@ -94,14 +98,20 @@ public class Utils {
 
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
                 String address = cursor.getString(cursor.getColumnIndex(projection[0]));
 
+                if (address == null) {
+                    return;
+                }
+                Log.i("ADDRESS", address);
 
                 Uri uri = Tables.SMSSenders.CONTENT_URI;
                 String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
                 String[] columnValues = {address};
+
                 if (!getTransactionsManager().isExists(uri, columns, columnValues)) {
-                    getTransactionsManager().saveMessageSender(address);
+                    getTransactionsManager().saveMessageSender(columnValues[0]);
                 }
             }
         }

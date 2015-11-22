@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.marvik.apps.smsblocker.database.operations.DataOperations;
 import com.marvik.apps.smsblocker.database.queries.Queries;
@@ -210,6 +209,10 @@ public class TransactionsManager {
 
     public void saveMessageSender(String address, boolean blocked, long blockTime) {
 
+        if (address == null) {
+            return;
+        }
+
         int iBlocked = blocked == true ? 1 : 0;
 
         String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
@@ -250,7 +253,7 @@ public class TransactionsManager {
             }
         }
 
-        Log.i("WHERE_CLAUSE", "isExists(" + where + ")");
+        //Log.i("WHERE_CLAUSE", "isExists(" + where + ")");
 
         Cursor cursor = getContext().getContentResolver().query(uri, null, where, null, null);
 
@@ -284,7 +287,7 @@ public class TransactionsManager {
             }
         }
 
-        Log.i("WHERE_CLAUSE", "getColumnsValues(" + where + ")");
+        //Log.i("WHERE_CLAUSE", "getColumnsValues(" + where + ")");
 
         Cursor cursor = getContext().getContentResolver().query(uri, null, where, null, null);
 
@@ -299,6 +302,18 @@ public class TransactionsManager {
         }
         if (cursor != null) cursor.close();
         return null;
+    }
+
+    public int getSendersCount() {
+        int senders = -1;
+        Cursor cursor = getSmsSenders().query(null, null, null, null);
+        if (cursor != null) {
+            senders = cursor.getCount();
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return senders;
     }
 
     private class TblBlockedSms implements DataOperations {
