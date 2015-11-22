@@ -31,7 +31,7 @@ public class Tables {
                 + COL_MESSAGE_TEXT + " TEXT, "
                 + COL_MESSAGE_SEND_TIME + " LONG NOT NULL, "
                 + COL_MESSAGE_RECEIVE_TIME + " LONG NOT NULL, "
-                + COL_MESSAGE_SYSTEM_TIME + " LONG NOT NULL, "
+                + COL_MESSAGE_SYSTEM_TIME + " LONG NOT NULL "
                 + ");";
 
     }
@@ -53,7 +53,7 @@ public class Tables {
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_SENDER_ADDRESS + " TEXT NOT NULL, "
                 + COL_BLOCKED + " INTEGER NOT NULL, "
-                + COL_BLOCK_TIME + " LONG NOT NULL, "
+                + COL_BLOCK_TIME + " LONG NOT NULL "
                 + ");";
 
     }
