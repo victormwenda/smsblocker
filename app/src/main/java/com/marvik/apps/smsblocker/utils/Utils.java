@@ -8,6 +8,7 @@ import android.provider.ContactsContract;
 import android.provider.Telephony;
 
 import com.marvik.apis.core.utilities.Utilities;
+import com.marvik.apps.smsblocker.database.schemas.Tables;
 import com.marvik.apps.smsblocker.database.transactions.TransactionsManager;
 import com.marvik.apps.smsblocker.infos.blocked.senders.SmsSendersInfo;
 import com.marvik.apps.smsblocker.preferences.manager.PrefsManager;
@@ -94,7 +95,14 @@ public class Utils {
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 String address = cursor.getString(cursor.getColumnIndex(projection[0]));
-                getTransactionsManager().saveMessageSender(address);
+
+
+                Uri uri = Tables.SMSSenders.CONTENT_URI;
+                String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
+                String[] columnValues = {address};
+                if (!getTransactionsManager().isExists(uri, columns, columnValues)) {
+                    getTransactionsManager().saveMessageSender(address);
+                }
             }
         }
 

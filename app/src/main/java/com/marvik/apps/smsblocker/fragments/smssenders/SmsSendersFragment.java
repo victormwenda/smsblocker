@@ -177,4 +177,5 @@ public class SmsSendersFragment extends FragmentWrapper {
     public interface OnSmsSender {
         void onRequestPickContact();
     }
+
 }

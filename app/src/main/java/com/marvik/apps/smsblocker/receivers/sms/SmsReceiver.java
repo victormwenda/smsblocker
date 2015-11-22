@@ -28,7 +28,9 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 
-    private Context getContext() {return context;}
+    private Context getContext() {
+        return context;
+    }
 
     public Utils getUtils() {
         return utils;
@@ -54,9 +56,20 @@ public class SmsReceiver extends BroadcastReceiver {
             if (messagePdu.isEmail()) {
                 senderPhone = messagePdu.getDisplayOriginatingAddress();
                 messageText = messagePdu.getDisplayMessageBody();
+
+                getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());
+                abortBroadcast();
+
             } else {
                 senderPhone = messagePdu.getOriginatingAddress();
                 messageText = messagePdu.getMessageBody();
+
+                if (utils.isSenderBlocked(senderPhone)) {
+                    getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());
+                    abortBroadcast();
+                } else {
+                    getUtils().getTransactionsManager().saveMessageSender(senderPhone, false, System.currentTimeMillis());
+                }
             }
         }
     }
