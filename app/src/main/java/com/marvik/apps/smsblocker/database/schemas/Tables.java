@@ -8,7 +8,7 @@ import android.net.Uri;
 public class Tables {
 
     public static class TablesSQL {
-        public static final String[] SQL = {BlockedSms.SQL};
+        public static final String[] SQL = {BlockedSms.SQL, BlockedSMSSenders.SQL};
     }
 
     public static class BlockedSms {
@@ -22,7 +22,7 @@ public class Tables {
 
         public static final String TABLE_NAME = "blockedsms";
 
-        public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.smsblocker.database.provider.DataProvider/"+TABLE_NAME);
+        public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.smsblocker.database.provider.DataProvider/" + TABLE_NAME);
 
         public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
                 + "("
@@ -36,5 +36,26 @@ public class Tables {
 
     }
 
+    public static class BlockedSMSSenders {
+
+        public static final String COL_ID = "_id";
+        public static final String COL_SENDER_ADDRESS = "sender_address";
+        public static final String COL_BLOCKED = "blocked";
+        public static final String COL_BLOCK_TIME = "block_time";
+
+
+        public static final String TABLE_NAME = "blockedsmssenders";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.smsblocker.database.provider.DataProvider/" + TABLE_NAME);
+
+        public static final String SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
+                + "("
+                + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_SENDER_ADDRESS + " TEXT NOT NULL, "
+                + COL_BLOCKED + " INTEGER NOT NULL, "
+                + COL_BLOCK_TIME + " LONG NOT NULL, "
+                + ");";
+
+    }
 
 }

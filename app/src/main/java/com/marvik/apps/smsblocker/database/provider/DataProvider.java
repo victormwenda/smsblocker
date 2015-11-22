@@ -19,7 +19,10 @@ import java.util.Locale;
 public final class DataProvider extends ContentProvider {
 
     private static final String AUTHORITY;
+
     private static final int MATCHER_BLOCKED_SMS;
+    private static final int MATCHER_BLOCKED_SMS_SENDERS;
+
     private static UriMatcher uriMatcher;
 
     static {
@@ -27,11 +30,13 @@ public final class DataProvider extends ContentProvider {
         AUTHORITY = "com.marvik.apps.smsblocker.database.provider.DataProvider";
 
         MATCHER_BLOCKED_SMS = 1;
+        MATCHER_BLOCKED_SMS_SENDERS = 2;
 
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 
         uriMatcher.addURI(AUTHORITY, Tables.BlockedSms.TABLE_NAME, MATCHER_BLOCKED_SMS);
+        uriMatcher.addURI(AUTHORITY, Tables.BlockedSms.TABLE_NAME, MATCHER_BLOCKED_SMS_SENDERS);
     }
 
     private Database database;
@@ -55,6 +60,9 @@ public final class DataProvider extends ContentProvider {
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
             return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         }
+        if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
+            return getSqLiteDatabase().query(false, Tables.BlockedSMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+        }
 
         return null;
     }
@@ -67,6 +75,9 @@ public final class DataProvider extends ContentProvider {
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
 
         }
+        if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
+
+        }
         return uri.getLastPathSegment();
     }
 
@@ -77,6 +88,10 @@ public final class DataProvider extends ContentProvider {
 
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
             long _id = getSqLiteDatabase().insert(Tables.BlockedSms.TABLE_NAME, null, values);
+            return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
+        }
+        if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
+            long _id = getSqLiteDatabase().insert(Tables.BlockedSMSSenders.TABLE_NAME, null, values);
             return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
         }
 
@@ -92,6 +107,9 @@ public final class DataProvider extends ContentProvider {
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
             return getSqLiteDatabase().delete(Tables.BlockedSms.TABLE_NAME, selection, selectionArgs);
         }
+        if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
+            return getSqLiteDatabase().delete(Tables.BlockedSMSSenders.TABLE_NAME, selection, selectionArgs);
+        }
 
         return 0;
     }
@@ -103,6 +121,9 @@ public final class DataProvider extends ContentProvider {
 
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
             return getSqLiteDatabase().update(Tables.BlockedSms.TABLE_NAME, values, selection, selectionArgs);
+        }
+        if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
+            return getSqLiteDatabase().update(Tables.BlockedSMSSenders.TABLE_NAME, values, selection, selectionArgs);
         }
         return 0;
     }

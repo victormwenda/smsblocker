@@ -1,4 +1,4 @@
-package com.marvik.apps.smsblocker.infos;
+package com.marvik.apps.smsblocker.infos.blocked.sms;
 
 /**
  * Created by victor on 11/21/2015.

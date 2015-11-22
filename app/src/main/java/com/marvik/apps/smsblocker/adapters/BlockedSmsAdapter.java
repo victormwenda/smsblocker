@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.marvik.apps.smsblocker.R;
-import com.marvik.apps.smsblocker.infos.BlockedSmsInfo;
+import com.marvik.apps.smsblocker.infos.blocked.sms.BlockedSmsInfo;
 import com.marvik.apps.smsblocker.utils.Utils;
 
 import java.util.List;

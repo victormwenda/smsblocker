@@ -10,7 +10,8 @@ import android.util.Log;
 import com.marvik.apps.smsblocker.database.operations.DataOperations;
 import com.marvik.apps.smsblocker.database.queries.Queries;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
-import com.marvik.apps.smsblocker.infos.BlockedSmsInfo;
+import com.marvik.apps.smsblocker.infos.blocked.senders.BlockedMessageSendersInfo;
+import com.marvik.apps.smsblocker.infos.blocked.sms.BlockedSmsInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,9 +133,13 @@ public class TransactionsManager {
         return blockedSmsInfos;
     }
 
-    private long parseTimeinMillis(String searchKey) { return System.currentTimeMillis();}
+    private long parseTimeinMillis(String searchKey) {
+        return System.currentTimeMillis();
+    }
 
-    private String mysqlRealEscape(String searchKey) { return searchKey.replace("'", "'\\");}
+    private String mysqlRealEscape(String searchKey) {
+        return searchKey.replace("'", "'\\");
+    }
 
     public boolean isExists(@NonNull Uri uri, @NonNull String[] columns, @NonNull String[] columnValues) {
 
@@ -224,6 +229,11 @@ public class TransactionsManager {
         if (cursor != null) if (!cursor.isClosed()) cursor.close();
 
         return smsCount;
+    }
+
+    public List<BlockedMessageSendersInfo> getBlockedMessageSendersInfo() {
+        List<BlockedMessageSendersInfo> blockedMessageSendersInfos = new ArrayList<>();
+        return blockedMessageSendersInfos;
     }
 
     private class TblBlockedSms implements DataOperations {
@@ -317,6 +327,94 @@ public class TransactionsManager {
                 return System.currentTimeMillis();
             }
             return Long.parseLong(systemTime);
+        }
+
+    }
+
+    private class TblBlockedSmsSenders implements DataOperations {
+
+        @Override
+        public Uri getUri() {
+            return Tables.BlockedSMSSenders.CONTENT_URI;
+        }
+
+        @Override
+        public String getType() {
+            return getUri().getLastPathSegment();
+        }
+
+        @Override
+        public void setType(Uri uri) {
+
+        }
+
+        @Override
+        public Uri insert(ContentValues values) {
+            return getContext().getContentResolver().insert(getUri(), values);
+        }
+
+        @Override
+        public int delete(String selection, String[] selectionArgs) {
+            return getContext().getContentResolver().delete(getUri(), selection, selectionArgs);
+        }
+
+        @Override
+        public int update(ContentValues values, String selection, String[] selectionArgs) {
+            return getContext().getContentResolver().update(getUri(), values, selection, selectionArgs);
+        }
+
+        @Override
+        public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+            return getContext().getContentResolver().query(getUri(), projection, selection, selectionArgs, sortOrder);
+        }
+
+        private String getColumnValue(@NonNull String[] index, @NonNull String[] indexColumn, String targetColumn) {
+            return getColumnsValues(getUri(), index, indexColumn, targetColumn);
+        }
+
+        public int getBlockedSmsSenderId(String senderAddress) {
+
+            String _id = getColumnValue(new String[]{senderAddress},
+                    new String[]{Tables.BlockedSMSSenders.COL_SENDER_ADDRESS},
+                    Tables.BlockedSMSSenders.COL_ID);
+            if (_id == null) {
+                return -1;
+            }
+            return Integer.parseInt(_id);
+        }
+
+        public String getBlockedMessageSenderAddress(int blockedSmsSenderId) {
+
+            return getColumnValue(new String[]{"" + blockedSmsSenderId},
+                    new String[]{Tables.BlockedSMSSenders.COL_ID},
+                    Tables.BlockedSMSSenders.COL_SENDER_ADDRESS);
+
+        }
+
+        public long getBlockedTime(int blockedSmsSenderId) {
+
+            String blockTime = getColumnValue(new String[]{"" + blockedSmsSenderId},
+                    new String[]{Tables.BlockedSMSSenders.COL_ID},
+                    Tables.BlockedSMSSenders.COL_BLOCK_TIME);
+            if (blockTime == null) {
+                return System.currentTimeMillis();
+            }
+            return Long.parseLong(blockTime);
+        }
+
+        public int getBlocked(int blockedSmsSenderId) {
+
+            String blocked = getColumnValue(new String[]{"" + blockedSmsSenderId},
+                    new String[]{Tables.BlockedSMSSenders.COL_ID},
+                    Tables.BlockedSMSSenders.COL_BLOCKED);
+            if (blocked == null) {
+                return 0;
+            }
+            return Integer.parseInt(blocked);
+        }
+
+        public boolean isBlocked(int blockedSmsSenderId) {
+            return getBlocked(blockedSmsSenderId) == 1;
         }
 
     }

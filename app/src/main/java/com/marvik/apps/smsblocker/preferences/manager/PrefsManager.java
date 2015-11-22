@@ -5,12 +5,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.marvik.apps.smsblocker.constants.Constants;
 import com.marvik.apps.smsblocker.preferences.userprefs.UserPreferences;
 
 /**
  * Created by victor on 11/7/2015.
  */
-public class PrefsManager implements UserPreferences{
+public class PrefsManager implements UserPreferences {
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -88,5 +89,15 @@ public class PrefsManager implements UserPreferences{
     @Override
     public void setEnabled(boolean enabled) {
 
+    }
+
+    @Override
+    public void setFirstRun(boolean firstRun) {
+        commit(Constants.Preferences.FIRSTRUN, firstRun);
+    }
+
+    @Override
+    public boolean isFirstRun() {
+        return read(Constants.Preferences.FIRSTRUN, Boolean.class, true);
     }
 }
