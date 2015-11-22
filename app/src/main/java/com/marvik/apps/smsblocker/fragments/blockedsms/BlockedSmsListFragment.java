@@ -31,6 +31,43 @@ public class BlockedSmsListFragment extends FragmentWrapper {
 
     private View mBlockedMessagesView;
     private List<BlockedSmsInfo> mBlockedSmsInfos;
+    private AdapterView.OnItemClickListener blockedSmsListClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (parent == mLvBlockedSms) {
+
+            }
+        }
+    };
+    private TextWatcher blockedSmsSearchTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            populateBlockedMessages();
+        }
+    };
+    private View.OnClickListener blockedSmsSearchWizardClicksListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v == mIvCancelSearch) {
+                mEtSearchBlockedSms.setText("");
+            }
+            if (v == mIvSearch) {
+                if (!mEtSearchBlockedSms.getText().equals("")) {
+                    getUtils().getUtilities().toast("Showing " + getBlockedSmsInfos().size() + " search result(s) for \" " + mEtSearchBlockedSms.getText().toString() + " \" ");
+                }
+            }
+        }
+    };
 
     @Override
     public void onCreateFragment(@Nullable Bundle savedInstanceState) {
@@ -55,7 +92,6 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         initChildViews(mBlockedMessagesView);
         getContainer().addView(mBlockedMessagesView);
     }
-
 
     @Override
     public void consumeBundle() {
@@ -101,20 +137,6 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         return mBlockedSmsInfos;
     }
 
-
-    public List<BlockedSmsInfo> getBlockedSmsInfos() {
-        return mBlockedSmsInfos;
-    }
-
-    private AdapterView.OnItemClickListener blockedSmsListClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (parent == mLvBlockedSms) {
-
-            }
-        }
-    };
-
     private void initChildViews(View blockedMessagesView) {
 
         mLvBlockedSms = (ListView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_lv_blocked_sms);
@@ -134,40 +156,9 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         mIvSearch.setOnClickListener(blockedSmsSearchWizardClicksListener);
     }
 
-    private TextWatcher blockedSmsSearchTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            populateBlockedMessages();
-        }
-    };
-
     private void populateBlockedMessages() {
         mBlockedSmsInfos = getUtils().getTransactionsManager().getBlockedSmsInfo(mEtSearchBlockedSms.getText().toString());
         mLvBlockedSms.setAdapter(new BlockedSmsAdapter(getActivity(), R.layout.list_blocked_sms_all, mBlockedSmsInfos));
     }
-
-    private View.OnClickListener blockedSmsSearchWizardClicksListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == mIvCancelSearch) {
-                mEtSearchBlockedSms.setText("");
-            }
-            if (v == mIvSearch) {
-                if (!mEtSearchBlockedSms.getText().equals("")) {
-                    getUtils().getUtilities().toast("Showing " + getBlockedSmsInfos().size() + " search result(s) for \" " + mEtSearchBlockedSms.getText().toString() + " \" ");
-                }
-            }
-        }
-    };
 
 }
