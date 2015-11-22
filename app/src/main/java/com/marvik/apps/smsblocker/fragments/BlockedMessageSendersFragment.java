@@ -9,9 +9,9 @@ import com.marvik.apis.core.fragments.FragmentWrapper;
 import com.marvik.apps.smsblocker.R;
 
 /**
- * Created by victor on 11/7/2015.
+ * Created by victor on 11/21/2015.
  */
-public class BlockedSmsListFragment extends FragmentWrapper {
+public class BlockedMessageSendersFragment extends FragmentWrapper {
     @Override
     public void onCreateFragment(@Nullable Bundle savedInstanceState) {
 
@@ -20,7 +20,7 @@ public class BlockedSmsListFragment extends FragmentWrapper {
     @Nullable
     @Override
     public String getActivityTitle() {
-        return getActivity().getString(R.string.activity_title_blocked_sms);
+        return getActivity().getString(R.string.activity_title_blocked_numbers);
     }
 
     @Override
