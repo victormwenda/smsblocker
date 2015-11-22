@@ -84,13 +84,13 @@ public class Utils {
 
     private void indexMessageSendersAll() {
 
-        Uri conversationsUri = Uri.parse("content://sms/conversations");
-        String[] projection = {Telephony.Sms.Conversations.ADDRESS};
+        Uri conversationsUri = Uri.parse("content://sms");
+        String[] projection = {Telephony.Sms.ADDRESS};
         String selection = null;
         String[] selectionArgs = null;
         String sortOrder = null;
 
-        Cursor cursor = getContext().getContentResolver().query(conversationsUri, projection, selection, selectionArgs, sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(conversationsUri, null, selection, selectionArgs, sortOrder);
 
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
