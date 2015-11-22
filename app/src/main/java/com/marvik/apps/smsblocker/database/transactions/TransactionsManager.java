@@ -173,14 +173,14 @@ public class TransactionsManager {
 
         String selection = null;
 
-        if (searchKey != null || !searchKey.equals("")) {
+        if (searchKey != null && !searchKey.equals("")) {
 
             selection = Tables.SMSSenders.COL_SENDER_ADDRESS + " LIKE '" + searchKey + "'";
         }
 
         String[] projection = {Tables.SMSSenders.COL_SENDER_ADDRESS};
 
-        Cursor cursor = getSmsSenders().query(projection, selection, null, Queries.SmsSenders.DEFAULT_SORT_ORDER);
+        Cursor cursor = getSmsSenders().query(null, null, null, null);
 
         if (cursor != null) {
 

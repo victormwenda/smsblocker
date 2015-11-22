@@ -39,9 +39,6 @@ public class Utils {
 
         prefsManager = new PrefsManager(getContext());
 
-        //TODO DELETE THIS LINE
-        getPrefsManager().setFirstRun(true);
-
         if (getPrefsManager().isFirstRun()) {
             indexMessageSendersAll();
             getPrefsManager().setFirstRun(false);
