@@ -1,7 +1,11 @@
 package com.marvik.apps.smsblocker.utils;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.Telephony;
 
 import com.marvik.apis.core.utilities.Utilities;
 import com.marvik.apps.smsblocker.database.transactions.TransactionsManager;
@@ -33,7 +37,7 @@ public class Utils {
 
         prefsManager = new PrefsManager(getContext());
 
-        if(prefsManager.isFirstRun()){
+        if (prefsManager.isFirstRun()) {
             indexMessageSendersAll();
         }
     }
@@ -76,9 +80,33 @@ public class Utils {
         return blocked;
     }
 
-    private void indexMessageSendersAll(){
+    private void indexMessageSendersAll() {
 
+        Uri conversationsUri = Uri.parse("content://sms/conversations");
+        String[] projection = {Telephony.Sms.Conversations.ADDRESS};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+
+        Cursor cursor = getContext().getContentResolver().query(conversationsUri, projection, selection, selectionArgs, sortOrder);
+
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                String address = cursor.getString(cursor.getColumnIndex(projection[0]));
+                getTransactionsManager().saveMessageSender(address);
+            }
+        }
+
+
+        if (cursor != null) {
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
 
     }
 
+    public String getPersonContactPhoneNumber(Uri contactUri) {
+        return getUtilities().getPersonContactsDataItem(contactUri, ContactsContract.CommonDataKinds.Phone.NUMBER);
+    }
 }

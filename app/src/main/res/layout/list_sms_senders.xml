@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_blocked_sms_all_rl_sender_blocked_sms_infos"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="4dp">
@@ -13,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
 
-        android:src="@drawable/ic_action_person"/>
+        android:src="@drawable/ic_action_person" />
 
     <TextView
         android:id="@+id/list_blocked_sms_all_tv_sender"
@@ -23,35 +22,26 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/list_blocked_sms_all_iv_sender_avatar"
         android:text="@string/sender_phonenumber_name"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/list_blocked_sms_all_tv_sms_delivery_time"
+        android:id="@+id/list_blocked_sms_all_tv_sms_sender_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/list_blocked_sms_all_tv_sender"
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@+id/list_blocked_sms_all_iv_sender_avatar"
-        android:text="@string/sender_phonenumber"/>
+        android:text="@string/sender_phonenumber" />
 
-    ImageView
-    android:id="@+id/list_blocked_sms_all_iv_more"
-    android:layout_width="10dp"
-    android:layout_height="40dp"
-    android:layout_alignParentRight="true"
-    android:layout_marginRight="10dp"
-    android:src="@drawable/icon_arrow_right"/>
-
-    TextView
-    android:id="@+id/list_blocked_sms_all_tv_sms_count"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignRight="@+id/list_blocked_sms_all_iv_more"
-    android:layout_below="@+id/list_blocked_sms_all_tv_sender"
-    android:layout_marginRight="16dp"
-
-    android:layout_toLeftOf="@+id/list_blocked_sms_all_iv_more"
-    android:text="@string/blocked_message_count"/>
+    <TextView
+        android:id="@+id/list_blocked_sms_all_tv_blocked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/list_blocked_sms_all_tv_sender"
+        android:layout_marginLeft="6dp"
+        android:text="@string/block"
+        android:textColor="@android:color/holo_green_dark" />
 
 
 </RelativeLayout>

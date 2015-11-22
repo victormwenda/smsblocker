@@ -61,7 +61,7 @@ public final class DataProvider extends ContentProvider {
             return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
-            return getSqLiteDatabase().query(false, Tables.BlockedSMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+            return getSqLiteDatabase().query(false, Tables.SMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         }
 
         return null;
@@ -91,7 +91,7 @@ public final class DataProvider extends ContentProvider {
             return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
-            long _id = getSqLiteDatabase().insert(Tables.BlockedSMSSenders.TABLE_NAME, null, values);
+            long _id = getSqLiteDatabase().insert(Tables.SMSSenders.TABLE_NAME, null, values);
             return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
         }
 
@@ -108,7 +108,7 @@ public final class DataProvider extends ContentProvider {
             return getSqLiteDatabase().delete(Tables.BlockedSms.TABLE_NAME, selection, selectionArgs);
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
-            return getSqLiteDatabase().delete(Tables.BlockedSMSSenders.TABLE_NAME, selection, selectionArgs);
+            return getSqLiteDatabase().delete(Tables.SMSSenders.TABLE_NAME, selection, selectionArgs);
         }
 
         return 0;
@@ -123,7 +123,7 @@ public final class DataProvider extends ContentProvider {
             return getSqLiteDatabase().update(Tables.BlockedSms.TABLE_NAME, values, selection, selectionArgs);
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
-            return getSqLiteDatabase().update(Tables.BlockedSMSSenders.TABLE_NAME, values, selection, selectionArgs);
+            return getSqLiteDatabase().update(Tables.SMSSenders.TABLE_NAME, values, selection, selectionArgs);
         }
         return 0;
     }

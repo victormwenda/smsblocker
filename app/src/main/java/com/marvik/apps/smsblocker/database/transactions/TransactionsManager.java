@@ -24,6 +24,7 @@ public class TransactionsManager {
 
     private Context context;
     private TblBlockedSms blockedSms;
+    private TblSmsSenders smsSenders;
 
     public TransactionsManager(Context context) {
         initAll(context);
@@ -42,9 +43,14 @@ public class TransactionsManager {
         return blockedSms;
     }
 
+    public TblSmsSenders getSmsSenders() {
+        return smsSenders;
+    }
+
     private void initAll(Context context) {
         this.context = context;
         blockedSms = new TblBlockedSms();
+        smsSenders = new TblSmsSenders();
     }
 
     public void saveBlockedSms(String senderPhonenumber, String messageText, long messageSendTime, long messageReceiveTime) {
@@ -236,6 +242,31 @@ public class TransactionsManager {
         return blockedMessageSendersInfos;
     }
 
+    public void saveMessageSender(String address) {
+        saveMessageSender(address, false, System.currentTimeMillis());
+    }
+
+    public void saveMessageSender(String address, boolean blocked, long blockTime) {
+
+        int iBlocked = blocked == true ? 1 : 0;
+
+        String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
+        String[] columnValues = {address};
+
+        ContentValues values = new ContentValues();
+
+        values.put(Tables.SMSSenders.COL_SENDER_ADDRESS, address);
+        values.put(Tables.SMSSenders.COL_BLOCKED, iBlocked);
+
+        if (isExists(getSmsSenders().getUri(), columns, columnValues)) {
+            int smsSenderId = getSmsSenders().getBlockedSmsSenderId(address);
+            getSmsSenders().update(values, Tables.SMSSenders.COL_ID + "='" + smsSenderId + "'", null);
+        } else {
+            values.put(Tables.SMSSenders.COL_BLOCK_TIME, System.currentTimeMillis());
+            getSmsSenders().insert(values);
+        }
+    }
+
     private class TblBlockedSms implements DataOperations {
 
         @Override
@@ -331,11 +362,11 @@ public class TransactionsManager {
 
     }
 
-    private class TblBlockedSmsSenders implements DataOperations {
+    private class TblSmsSenders implements DataOperations {
 
         @Override
         public Uri getUri() {
-            return Tables.BlockedSMSSenders.CONTENT_URI;
+            return Tables.SMSSenders.CONTENT_URI;
         }
 
         @Override
@@ -375,8 +406,8 @@ public class TransactionsManager {
         public int getBlockedSmsSenderId(String senderAddress) {
 
             String _id = getColumnValue(new String[]{senderAddress},
-                    new String[]{Tables.BlockedSMSSenders.COL_SENDER_ADDRESS},
-                    Tables.BlockedSMSSenders.COL_ID);
+                    new String[]{Tables.SMSSenders.COL_SENDER_ADDRESS},
+                    Tables.SMSSenders.COL_ID);
             if (_id == null) {
                 return -1;
             }
@@ -386,16 +417,16 @@ public class TransactionsManager {
         public String getBlockedMessageSenderAddress(int blockedSmsSenderId) {
 
             return getColumnValue(new String[]{"" + blockedSmsSenderId},
-                    new String[]{Tables.BlockedSMSSenders.COL_ID},
-                    Tables.BlockedSMSSenders.COL_SENDER_ADDRESS);
+                    new String[]{Tables.SMSSenders.COL_ID},
+                    Tables.SMSSenders.COL_SENDER_ADDRESS);
 
         }
 
         public long getBlockedTime(int blockedSmsSenderId) {
 
             String blockTime = getColumnValue(new String[]{"" + blockedSmsSenderId},
-                    new String[]{Tables.BlockedSMSSenders.COL_ID},
-                    Tables.BlockedSMSSenders.COL_BLOCK_TIME);
+                    new String[]{Tables.SMSSenders.COL_ID},
+                    Tables.SMSSenders.COL_BLOCK_TIME);
             if (blockTime == null) {
                 return System.currentTimeMillis();
             }
@@ -405,8 +436,8 @@ public class TransactionsManager {
         public int getBlocked(int blockedSmsSenderId) {
 
             String blocked = getColumnValue(new String[]{"" + blockedSmsSenderId},
-                    new String[]{Tables.BlockedSMSSenders.COL_ID},
-                    Tables.BlockedSMSSenders.COL_BLOCKED);
+                    new String[]{Tables.SMSSenders.COL_ID},
+                    Tables.SMSSenders.COL_BLOCKED);
             if (blocked == null) {
                 return 0;
             }

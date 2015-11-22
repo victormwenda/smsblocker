@@ -1,4 +1,4 @@
-package com.marvik.apps.smsblocker.fragments.blockedsenders;
+package com.marvik.apps.smsblocker.fragments.smssenders;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,8 @@ import com.marvik.apps.smsblocker.R;
 /**
  * Created by victor on 11/21/2015.
  */
-public class BlockedMessageSendersFragment extends FragmentWrapper {
+public class SmsSendersFragment extends FragmentWrapper {
+
     @Override
     public void onCreateFragment(@Nullable Bundle savedInstanceState) {
 
@@ -71,6 +72,6 @@ public class BlockedMessageSendersFragment extends FragmentWrapper {
 
     @Override
     public int getParentLayout() {
-        return 0;
+        return R.layout.fragment_sms_senders;
     }
 }

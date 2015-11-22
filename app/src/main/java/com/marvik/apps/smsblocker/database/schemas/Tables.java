@@ -8,7 +8,7 @@ import android.net.Uri;
 public class Tables {
 
     public static class TablesSQL {
-        public static final String[] SQL = {BlockedSms.SQL, BlockedSMSSenders.SQL};
+        public static final String[] SQL = {BlockedSms.SQL, SMSSenders.SQL};
     }
 
     public static class BlockedSms {
@@ -36,7 +36,7 @@ public class Tables {
 
     }
 
-    public static class BlockedSMSSenders {
+    public static class SMSSenders {
 
         public static final String COL_ID = "_id";
         public static final String COL_SENDER_ADDRESS = "sender_address";
