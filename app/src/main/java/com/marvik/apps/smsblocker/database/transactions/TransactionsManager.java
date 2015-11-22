@@ -208,6 +208,24 @@ public class TransactionsManager {
         return null;
     }
 
+    public int getBlockedSmsSenderBlockedMessagesCount(String senderPhonenumber) {
+
+        String[] projection = {Tables.BlockedSms.COL_SENDER_PHONENUMBER};
+
+        String selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + "='" + senderPhonenumber + "'";
+
+        Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.SORT_ORDER_DEFAULT);
+
+        int smsCount = 0;
+
+        if (cursor != null) {
+            smsCount = cursor.getCount();
+        }
+        if (cursor != null) if (!cursor.isClosed()) cursor.close();
+
+        return smsCount;
+    }
+
     private class TblBlockedSms implements DataOperations {
 
         @Override

@@ -1,6 +1,7 @@
 package com.marvik.apps.smsblocker.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.marvik.apis.core.utilities.Utilities;
 import com.marvik.apps.smsblocker.database.transactions.TransactionsManager;
@@ -43,5 +44,13 @@ public class Utils {
 
     public PrefsManager getPrefsManager() {
         return prefsManager;
+    }
+
+    public String getHumanFriendlySenderName(String phonenumber) {
+        return getUtilities().getContactDisplayName(phonenumber);
+    }
+
+    public Bitmap getHumanFriendlySenderAvatar(String phonenumber) {
+        return getUtilities().getContactAvatar(phonenumber);
     }
 }

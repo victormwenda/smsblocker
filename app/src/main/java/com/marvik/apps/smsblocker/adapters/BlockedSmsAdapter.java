@@ -110,13 +110,13 @@ public class BlockedSmsAdapter extends BaseAdapter {
 
 
             String date = getUtils().getUtilities().getHumanFriendlyFormattedTime(messageReceiveTime);
-            String receiveTime = getUtils().getUtilities().getFormattedTime("hh:mm ", messageReceiveTime);
+            String receiveTime = getUtils().getUtilities().getFormattedTime("hh:mm a", messageReceiveTime);
             String sender = getUtils().getHumanFriendlySenderName(senderPhonenumber);
 
             int senderMessages = getUtils().getTransactionsManager().getBlockedSmsSenderBlockedMessagesCount(senderPhonenumber);
 
             mTvDate.setText(date);
-            mIvSenderAvatar.setImageURI(getUtils().getHumanFriendlySenderAvatar(senderPhonenumber));
+            mIvSenderAvatar.setImageBitmap(getUtils().getHumanFriendlySenderAvatar(senderPhonenumber));
             mTvSender.setText(sender);
             mTvReceiveTime.setText(receiveTime);
             mTvBlockedSmsCount.setText(senderMessages == 1 ? senderMessages + " Message" : senderMessages + " Messages");
