@@ -121,11 +121,8 @@ public class BlockedSmsListFragment extends FragmentWrapper {
 
     @Override
     public void onResumeFragment() {
-
-        //Trigger Text Watcher
-        mEtSearchBlockedSms.setText("");
-
         populateBlockedMessages();
+        mEtSearchBlockedSms.setText("");
     }
 
     @Override
@@ -161,13 +158,12 @@ public class BlockedSmsListFragment extends FragmentWrapper {
 
         mLvBlockedSms = (ListView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_lv_blocked_sms);
 
-        mEtSearchBlockedSms = (MultiAutoCompleteTextView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_mactv_search);
-
         mIvCancelSearch = (ImageView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_iv_close_clear_cancel);
 
         mIvSearch = (ImageView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_iv_search);
 
-        mEtSearchBlockedSms.setPadding(mIvSearch.getWidth() + 16, 0, 0, 0);
+        mEtSearchBlockedSms = (MultiAutoCompleteTextView) blockedMessagesView.findViewById(R.id.fragment_blocked_sms_all_mactv_search);
+        mEtSearchBlockedSms.setText(getActivityTitle());
 
         mLvBlockedSms.setOnItemClickListener(blockedSmsListClickListener);
 

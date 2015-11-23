@@ -59,10 +59,13 @@ public class DataProvider extends ContentProvider {
         initSqliteDatabase(DataAction.DATA_ACTION_QUERY);
 
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
-            return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, null, null, Queries.BlockedSms.DEFAULT_SORT_ORDER, null);
+            String groupBy = Tables.BlockedSms.COL_SENDER_PHONENUMBER;
+            sortOrder = Queries.BlockedSms.DEFAULT_SORT_ORDER;
+            return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, groupBy, null, sortOrder, null);
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
-            return getSqLiteDatabase().query(false, Tables.SMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, Queries.SmsSenders.DEFAULT_SORT_ORDER, null);
+            sortOrder = Queries.SmsSenders.DEFAULT_SORT_ORDER;
+            return getSqLiteDatabase().query(false, Tables.SMSSenders.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         }
 
         return null;
