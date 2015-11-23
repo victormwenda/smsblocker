@@ -131,7 +131,7 @@ public class BlockedSmsAdapter extends BaseAdapter {
             //Date
             if (position > 0) {
 
-                long previousMessageReceiveTime = getBlockedSmses().get(position).getMessageReceiveTime();
+                long previousMessageReceiveTime = getBlockedSmses().get(position - 1).getMessageReceiveTime();
                 String previousDate = getUtils().getUtilities().getHumanFriendlyFormattedTime(previousMessageReceiveTime);
 
                 if (previousDate.equals(date)) {
