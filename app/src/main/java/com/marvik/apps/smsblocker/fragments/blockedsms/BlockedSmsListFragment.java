@@ -1,5 +1,9 @@
 package com.marvik.apps.smsblocker.fragments.blockedsms;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -19,6 +23,7 @@ import com.marvik.apis.core.fragments.FragmentWrapper;
 import com.marvik.apps.smsblocker.R;
 import com.marvik.apps.smsblocker.adapters.sms.blocked.BlockedSmsAdapter;
 import com.marvik.apps.smsblocker.infos.blocked.sms.BlockedSmsInfo;
+import com.marvik.apps.smsblocker.intents.Intents;
 
 import java.util.List;
 
@@ -85,9 +90,18 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         }
     };
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intents.ACTION_BLOCKED_MESSAGE_SAVED)) {
+                populateBlockedMessages();
+            }
+        }
+    };
+
     @Override
     public void onCreateFragment(@Nullable Bundle savedInstanceState) {
-
+        getActivity().registerReceiver(receiver, new IntentFilter(Intents.ACTION_BLOCKED_MESSAGE_SAVED));
     }
 
     @Nullable
@@ -142,7 +156,7 @@ public class BlockedSmsListFragment extends FragmentWrapper {
 
     @Override
     public void onDestroyFragment() {
-
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override
@@ -197,4 +211,6 @@ public class BlockedSmsListFragment extends FragmentWrapper {
 
         void viewMessageSenders();
     }
+
+
 }

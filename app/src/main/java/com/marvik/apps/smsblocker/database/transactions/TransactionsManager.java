@@ -225,12 +225,12 @@ public class TransactionsManager {
 
         values.put(Tables.SMSSenders.COL_SENDER_ADDRESS, address);
         values.put(Tables.SMSSenders.COL_BLOCKED, iBlocked);
+        values.put(Tables.SMSSenders.COL_BLOCK_TIME, System.currentTimeMillis());
 
         if (isExists(getSmsSenders().getUri(), columns, columnValues)) {
             int smsSenderId = getSmsSenders().getBlockedSmsSenderId(address);
             getSmsSenders().update(values, Tables.SMSSenders.COL_ID + "='" + smsSenderId + "'", null);
         } else {
-            values.put(Tables.SMSSenders.COL_BLOCK_TIME, System.currentTimeMillis());
             getSmsSenders().insert(values);
         }
     }

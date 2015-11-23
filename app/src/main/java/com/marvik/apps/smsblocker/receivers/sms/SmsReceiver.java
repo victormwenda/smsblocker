@@ -53,16 +53,8 @@ public class SmsReceiver extends BroadcastReceiver {
             String messageText = null;
             long sendTime = messagePdu.getTimestampMillis();
 
-            if (messagePdu.isEmail()) {
-                senderPhone = messagePdu.getDisplayOriginatingAddress();
-                messageText = messagePdu.getDisplayMessageBody();
 
-                if (utils.isSenderBlocked(senderPhone)) {
-                    getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());
-                    abortBroadcast();
-                }
-
-            } else {
+            if (true) {
                 senderPhone = messagePdu.getOriginatingAddress();
                 messageText = messagePdu.getMessageBody();
 
@@ -73,6 +65,17 @@ public class SmsReceiver extends BroadcastReceiver {
                     getUtils().getTransactionsManager().saveMessageSender(senderPhone, false, System.currentTimeMillis());
                 }
             }
+
+            /*if (messagePdu.isEmail()) {
+                senderPhone = messagePdu.getDisplayOriginatingAddress();
+                messageText = messagePdu.getDisplayMessageBody();
+
+                if (utils.isSenderBlocked(senderPhone)) {
+                    getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());
+                    abortBroadcast();
+                }
+
+            }*/
         }
     }
 }

@@ -11,6 +11,8 @@ import com.marvik.apps.smsblocker.database.actions.DataAction;
 import com.marvik.apps.smsblocker.database.queries.Queries;
 import com.marvik.apps.smsblocker.database.schemas.Database;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
+import com.marvik.apps.smsblocker.intents.Intents;
+import com.marvik.apps.smsblocker.utils.Utils;
 
 import java.util.Locale;
 
@@ -43,13 +45,15 @@ public class DataProvider extends ContentProvider {
     private Database database;
     private SQLiteDatabase sqLiteDatabase;
 
+    private Utils utils;
+
     public static String getAuthority() {
         return AUTHORITY;
     }
 
     @Override
     public boolean onCreate() {
-        database = new Database(getContext());
+        initAll();
         return false;
     }
 
@@ -98,6 +102,7 @@ public class DataProvider extends ContentProvider {
 
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
             long _id = getSqLiteDatabase().insert(Tables.BlockedSms.TABLE_NAME, null, values);
+            getUtils().getUtilities().sendBroadcast(Intents.ACTION_BLOCKED_MESSAGE_SAVED);
             return uri.buildUpon().appendPath(Tables.BlockedSms.COL_ID + "/" + String.format(Locale.getDefault(), "%d", _id)).build();
         }
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS_SENDERS) {
@@ -158,5 +163,14 @@ public class DataProvider extends ContentProvider {
 
     public SQLiteDatabase getSqLiteDatabase() {
         return sqLiteDatabase;
+    }
+
+    public Utils getUtils() {
+        return utils;
+    }
+
+    private void initAll() {
+        database = new Database(getContext());
+        utils = new Utils(getContext());
     }
 }
