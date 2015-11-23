@@ -59,7 +59,13 @@ public class DataProvider extends ContentProvider {
         initSqliteDatabase(DataAction.DATA_ACTION_QUERY);
 
         if (uriMatcher.match(uri) == MATCHER_BLOCKED_SMS) {
-            String groupBy = Tables.BlockedSms.COL_SENDER_PHONENUMBER;
+            String groupBy = null;
+            if (selectionArgs != null) {
+                if (selectionArgs.length > 0) {
+                    groupBy = selectionArgs[0];//Tables.BlockedSms.COL_SENDER_PHONENUMBER;
+                }
+            }
+            selectionArgs = null; //RESET TO NULL BECAUSE selectionArgs WAS JUST USED TO TRANSPORT PARAMS
             sortOrder = Queries.BlockedSms.DEFAULT_SORT_ORDER;
             return getSqLiteDatabase().query(false, Tables.BlockedSms.TABLE_NAME, projection, selection, selectionArgs, groupBy, null, sortOrder, null);
         }

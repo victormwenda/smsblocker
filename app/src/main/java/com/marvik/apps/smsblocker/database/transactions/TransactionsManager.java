@@ -111,7 +111,10 @@ public class TransactionsManager {
 
         String[] projection = null;
 
-        Cursor cursor = getBlockedSms().query(projection, selection, null, Queries.BlockedSms.DEFAULT_SORT_ORDER);
+        String[] selectionArgs = {
+                Tables.BlockedSms.COL_SENDER_PHONENUMBER //PASSED TO BE USED AS GROUP BY ONLY, THIS OBJECT IS DESTROYED AFTER DATA MINING
+        };
+        Cursor cursor = getBlockedSms().query(projection, selection, selectionArgs, Queries.BlockedSms.DEFAULT_SORT_ORDER);
 
         List<BlockedSmsInfo> blockedSmsInfos = new ArrayList<>();
 
