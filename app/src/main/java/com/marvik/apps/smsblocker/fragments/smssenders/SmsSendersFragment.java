@@ -46,15 +46,21 @@ public class SmsSendersFragment extends FragmentWrapper {
     };
     private AdapterView.OnItemClickListener smsSenderListClickListener = new AdapterView.OnItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
             if (parent == mLvSmsSenders) {
-                setLastKnownScrollYPosition(mLvSmsSenders.getScrollY());
-                String address = getSmsSendersInfo().get(position).getMessageSenderAddress();
-                boolean blocked = getSmsSendersInfo().get(position).isBlocked();
-                long blockTime = getSmsSendersInfo().get(position).getBlockedTime();
-                getUtils().getTransactionsManager().saveMessageSender(address, !blocked, blockTime);
-                populateSmsSenders();
-                mLvSmsSenders.setScrollY(getLastKnownScrollYPosition());
+                mLvSmsSenders.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setLastKnownScrollYPosition(mLvSmsSenders.getScrollY());
+                        String address = getSmsSendersInfo().get(position).getMessageSenderAddress();
+                        boolean blocked = getSmsSendersInfo().get(position).isBlocked();
+                        long blockTime = getSmsSendersInfo().get(position).getBlockedTime();
+                        getUtils().getTransactionsManager().saveMessageSender(address, !blocked, blockTime);
+                        populateSmsSenders();
+                        mLvSmsSenders.setScrollY(getLastKnownScrollYPosition());
+                    }
+                });
+
             }
 
 
@@ -73,7 +79,6 @@ public class SmsSendersFragment extends FragmentWrapper {
 
         @Override
         public void afterTextChanged(Editable s) {
-
             populateSmsSenders();
         }
     };

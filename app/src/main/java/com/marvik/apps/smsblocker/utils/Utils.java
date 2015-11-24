@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.Telephony;
-import android.util.Log;
 
 import com.marvik.apis.core.utilities.Utilities;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
@@ -40,11 +39,9 @@ public class Utils {
         prefsManager = new PrefsManager(getContext());
 
         if (getPrefsManager().isFirstRun()) {
-            try {
-                indexMessageSendersAll();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+            indexAllMessageSenders();
+
             getPrefsManager().setFirstRun(false);
         }
     }
@@ -88,6 +85,18 @@ public class Utils {
         return blocked;
     }
 
+    private void indexAllMessageSenders() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    indexMessageSendersAll();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
     private void indexMessageSendersAll() throws Exception {
 
         Uri conversationsUri = Uri.parse("content://sms");
@@ -106,7 +115,6 @@ public class Utils {
                 if (address == null) {
                     return;
                 }
-                Log.i("ADDRESS", address);
 
                 Uri uri = Tables.SMSSenders.CONTENT_URI;
                 String[] columns = {Tables.SMSSenders.COL_SENDER_ADDRESS};
