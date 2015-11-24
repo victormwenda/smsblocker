@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.marvik.apps.smsblocker.database.operations.DataOperations;
 import com.marvik.apps.smsblocker.database.queries.Queries;
@@ -130,8 +129,6 @@ public class TransactionsManager {
                 long messageSendTime = cursor.getLong(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_SEND_TIME));
                 long messageReceiveTime = cursor.getLong(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_RECEIVE_TIME));
                 long systemTime = cursor.getLong(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_SYSTEM_TIME));
-
-                Log.i("BLOCKED_SMS", senderPhonenumber + " : " + messageText);
 
                 blockedSmsInfos.add(new BlockedSmsInfo(blockedSmsId, senderPhonenumber, messageText,
                         messageSendTime, messageReceiveTime, systemTime));

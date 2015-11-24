@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Sms Blocker</string>
+    <string name="date">Date</string>
+    <string name="sender_phonenumber_name">Sender Name</string>
+    <string name="time">Time</string>
+
+    <!-- Intents -->
+    <string name="INTENT_SMS_RECEIVED">android.provider.Telephony.SMS_RECEIVED</string>
+
+    <!-- Activity Titles-->
+    <string name="activity_title_blocked_sms">Blocked Messages</string>
+    <string name="activity_title_blocked_numbers">Sms Senders</string>
+
+    <!-- List Blocked Messages-->
+    <string name="blocked_message_count">Blocked Messages</string>
+    <string name="search_sender">Search Phone Number</string>
+
+    <!-- List Block Senders -->
+    <string name="sender_phonenumber">Sender Address</string>
+    <string name="block">block</string>
+    <string name="unblock">un-block</string>
+    <string name="view_message_senders">Blocked Numbers</string>
+
+    <!-- Sender Blocked Messages-->
+    <string name="message">Message</string>
+    <string name="statistics">Message Statistics</string>
+    <string name="send_time">Send Time</string>
+    <string name="receive_time">Receive Time</string>
+    <string name="search_message">Search Blocked Message</string>
+</resources>
