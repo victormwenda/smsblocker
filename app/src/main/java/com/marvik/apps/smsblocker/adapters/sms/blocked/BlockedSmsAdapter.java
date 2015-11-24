@@ -113,6 +113,10 @@ public class BlockedSmsAdapter extends BaseAdapter {
             String receiveTime = getUtils().getUtilities().getFormattedTime("hh:mm a", messageReceiveTime);
             String sender = getUtils().getHumanFriendlySenderName(senderPhonenumber);
 
+            if (sender == null) {
+                sender = senderPhonenumber;
+            }
+
             int senderMessages = getUtils().getTransactionsManager().getBlockedSmsSenderBlockedMessagesCount(senderPhonenumber);
 
             mTvDate.setText(date);
@@ -126,7 +130,9 @@ public class BlockedSmsAdapter extends BaseAdapter {
             //Messages
             if (senderMessages > 0) {
                 mIvMoreMessages.setVisibility(ImageView.VISIBLE);
-            } else { mIvMoreMessages.setVisibility(ImageView.GONE);}
+            } else {
+                mIvMoreMessages.setVisibility(ImageView.GONE);
+            }
 
             //Date
             if (position > 0) {
