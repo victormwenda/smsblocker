@@ -9,4 +9,5 @@ public class Intents {
     public static final String INTENT_SMS_RECEIVED = Telephony.Sms.Intents.SMS_RECEIVED_ACTION;
     public static final String INTENT_SMS_DELIVERED = Telephony.Sms.Intents.SMS_DELIVER_ACTION;
     public static final String ACTION_BLOCKED_MESSAGE_SAVED = "com.marvik.apps.smsblocker.ACTION_BLOCKED_MESSAGE_SAVED";
+    public static final String ACTION_MESSAGE_SENDER_SAVED = "com.marvik.apps.smsblocker.ACTION_MESSAGE_SENDER_SAVED";
 }

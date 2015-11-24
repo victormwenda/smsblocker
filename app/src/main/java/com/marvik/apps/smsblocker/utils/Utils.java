@@ -40,21 +40,12 @@ public class Utils {
         prefsManager = new PrefsManager(getContext());
 
         if (getPrefsManager().isFirstRun()) {
-            indexMessageSendersAll();
+            try {
+                indexMessageSendersAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             getPrefsManager().setFirstRun(false);
-
-            getTransactionsManager().saveBlockedSms("0718034449", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0725238581", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0716202473", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0713273549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0733448549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0718034449", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0725238581", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0716202473", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0713273549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-            getTransactionsManager().saveBlockedSms("0733448549", "Hi Victor", System.currentTimeMillis(), System.currentTimeMillis());
-
-
         }
     }
 
@@ -89,6 +80,7 @@ public class Utils {
         List<SmsSendersInfo> smsSendersInfos = getTransactionsManager().getSmsSendersInfo(messageSender);
 
         for (SmsSendersInfo smsSendersInfo : smsSendersInfos) {
+
             if (messageSender.equals(smsSendersInfo.getMessageSenderAddress())) {
                 blocked = smsSendersInfo.isBlocked();
             }
@@ -96,7 +88,7 @@ public class Utils {
         return blocked;
     }
 
-    private void indexMessageSendersAll() {
+    private void indexMessageSendersAll() throws Exception {
 
         Uri conversationsUri = Uri.parse("content://sms");
         String[] projection = {Telephony.Sms.ADDRESS};

@@ -258,15 +258,22 @@ public class TransactionsManager {
 
         //Log.i("WHERE_CLAUSE", "isExists(" + where + ")");
 
-        Cursor cursor = getContext().getContentResolver().query(uri, null, where, null, null);
+        Cursor cursor = null;
 
+        try {
+            cursor = getContext().getContentResolver().query(uri, null, where, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         boolean isExists = false;
 
         if (cursor != null) {
             isExists = cursor.getCount() > 0;
-            cursor.close();
         }
 
+        if (cursor != null) {
+            cursor.close();
+        }
         return isExists;
     }
 

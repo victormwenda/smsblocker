@@ -76,6 +76,8 @@ public class SmsReceiver extends BroadcastReceiver {
                 }
 
             }*/
+
+            getUtils().getUtilities().sendBroadcast(Intents.ACTION_MESSAGE_SENDER_SAVED);
         }
     }
 }
