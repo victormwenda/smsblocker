@@ -45,7 +45,8 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (parent == mLvBlockedSms) {
-
+                String senderAddress = getBlockedSmsInfos().get(position).getSenderPhonenumber();
+                onBlockedSms.showSenderBlockedMessages(senderAddress);
             }
         }
     };
@@ -139,15 +140,6 @@ public class BlockedSmsListFragment extends FragmentWrapper {
         mEtSearchBlockedSms.setText("");
     }
 
-    @Override
-    public void performPartialSync() {
-
-    }
-
-    @Override
-    public void onPerformPartialSync() {
-
-    }
 
     @Override
     public void onPauseFragment() {
@@ -210,6 +202,8 @@ public class BlockedSmsListFragment extends FragmentWrapper {
     public interface OnBlockedSms {
 
         void viewMessageSenders();
+
+        void showSenderBlockedMessages(String senderAddress);
     }
 
 

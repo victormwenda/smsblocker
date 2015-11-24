@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.marvik.apps.smsblocker.database.operations.DataOperations;
 import com.marvik.apps.smsblocker.database.queries.Queries;
 import com.marvik.apps.smsblocker.database.schemas.Tables;
+import com.marvik.apps.smsblocker.infos.blocked.SenderMessageInfo;
 import com.marvik.apps.smsblocker.infos.blocked.senders.SmsSendersInfo;
 import com.marvik.apps.smsblocker.infos.blocked.sms.BlockedSmsInfo;
 
@@ -324,6 +325,46 @@ public class TransactionsManager {
             cursor.close();
         }
         return senders;
+    }
+
+    public List<SenderMessageInfo> getSenderBlockedMessages(String senderAddress, String searchKey) {
+
+        List<SenderMessageInfo> senderMessageInfos = new ArrayList<SenderMessageInfo>();
+
+        searchKey = mysqlRealEscape(searchKey);
+
+        String selection = Tables.BlockedSms.COL_SENDER_PHONENUMBER + "='" + senderAddress + "'";
+
+        String[] projection = null;
+
+        if (searchKey != null && !searchKey.equals("")) {
+
+            selection += " AND " + Tables.BlockedSms.COL_MESSAGE_TEXT + " LIKE '%" + searchKey + "%'";
+        }
+
+
+        Cursor cursor = getBlockedSms().query(projection, selection, null, null);
+
+        if (cursor != null) {
+
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+
+                int messageId = cursor.getInt(cursor.getColumnIndex(Tables.BlockedSms.COL_ID));
+                String messageText = cursor.getString(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_TEXT));
+                long messageReceiveTime = cursor.getLong(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_RECEIVE_TIME));
+                long messageSendTime = cursor.getLong(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_SEND_TIME));
+                long systemTime = cursor.getLong(cursor.getColumnIndex(Tables.BlockedSms.COL_MESSAGE_SYSTEM_TIME));
+
+                senderMessageInfos.add(new SenderMessageInfo(messageId, messageText, messageReceiveTime, messageSendTime, systemTime));
+            }
+        }
+
+
+        if (cursor != null)
+            if (!cursor.isClosed()) cursor.close();
+
+
+        return senderMessageInfos;
     }
 
     private class TblBlockedSms implements DataOperations {

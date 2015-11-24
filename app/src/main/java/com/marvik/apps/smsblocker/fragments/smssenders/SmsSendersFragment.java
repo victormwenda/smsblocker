@@ -86,6 +86,7 @@ public class SmsSendersFragment extends FragmentWrapper {
             }
         }
     };
+
     @Override
     public void onCreateFragment(@Nullable Bundle savedInstanceState) {
         getActivity().registerReceiver(receiver, new IntentFilter(Intents.ACTION_MESSAGE_SENDER_SAVED));
@@ -138,16 +139,6 @@ public class SmsSendersFragment extends FragmentWrapper {
 
     public void setLastKnownScrollYPosition(int lastKnownScrollYPosition) {
         this.lastKnownScrollYPosition = lastKnownScrollYPosition;
-    }
-
-    @Override
-    public void performPartialSync() {
-
-    }
-
-    @Override
-    public void onPerformPartialSync() {
-
     }
 
     @Override
