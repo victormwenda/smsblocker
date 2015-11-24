@@ -47,6 +47,7 @@ public class SmsReceiver extends BroadcastReceiver {
         SmsMessage[] messagePdus = new SmsMessage[pdus.length];
 
         for (int i = 0; i < messagePdus.length; i++) {
+
             SmsMessage messagePdu = SmsMessage.createFromPdu((byte[]) pdus[i]);
 
             String senderPhone = null;
@@ -55,8 +56,17 @@ public class SmsReceiver extends BroadcastReceiver {
 
 
             if (true) {
+
                 senderPhone = messagePdu.getOriginatingAddress();
                 messageText = messagePdu.getMessageBody();
+
+                if (senderPhone != null) {
+                    getUtils().getPrefsManager().setLastKnownSenderAddress(senderPhone);
+                }
+
+                if (senderPhone == null) {
+                    senderPhone = getUtils().getPrefsManager().getLastKnownSenderAddress();
+                }
 
                 if (utils.isSenderBlocked(senderPhone)) {
                     getUtils().getTransactionsManager().saveBlockedSms(senderPhone, messageText, sendTime, System.currentTimeMillis());

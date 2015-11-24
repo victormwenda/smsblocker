@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.marvik.apis.core.utilities.Utilities;
 import com.marvik.apps.smsblocker.constants.Constants;
 import com.marvik.apps.smsblocker.preferences.userprefs.UserPreferences;
 
@@ -16,10 +17,12 @@ public class PrefsManager implements UserPreferences {
     private Context context;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private Utilities utilities;
 
     public PrefsManager(@NonNull Context context) {
         this.context = context;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        utilities = new Utilities(getContext());
     }
 
     public Context getContext() {
@@ -35,6 +38,10 @@ public class PrefsManager implements UserPreferences {
             editor = getSharedPreferences().edit();
         }
         return editor;
+    }
+
+    public Utilities getUtilities() {
+        return utilities;
     }
 
     private <T> void commit(String preference, T typeOf) {
@@ -99,5 +106,15 @@ public class PrefsManager implements UserPreferences {
     @Override
     public void setFirstRun(boolean firstRun) {
         commit(Constants.Preferences.FIRSTRUN, firstRun);
+    }
+
+    @Override
+    public String getLastKnownSenderAddress() {
+        return read(Constants.Preferences.LAST_KNOWN_SENDER, String.class, getUtilities().getActiveLine1Number());
+    }
+
+    @Override
+    public void setLastKnownSenderAddress(String senderPhone) {
+        commit(Constants.Preferences.LAST_KNOWN_SENDER, senderPhone);
     }
 }
